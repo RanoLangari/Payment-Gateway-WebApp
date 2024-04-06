@@ -1,10 +1,14 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProductPage from "./components/ProductPage";
 
 function App() {
   return (
-    <div className="App">
-      <h1>React App</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ProductPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
