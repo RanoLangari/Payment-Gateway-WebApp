@@ -1,4 +1,7 @@
 import Users from "../Models/UsersModel.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const registerUser = async (req, res) => {
   try {
@@ -20,9 +23,13 @@ export const loginUser = async (req, res) => {
       },
     });
     if (user) {
-      res.status(200).json({
+      const id = user.id;
+      const token = jwt.sign({ id }, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+      });
+      return res.status(200).json({
         message: "Login berhasil",
-        data: user,
+        token,
       });
     } else {
       res.status(400).json({
@@ -31,5 +38,21 @@ export const loginUser = async (req, res) => {
     }
   } catch (error) {
     console.log(`error pada loginUser: ${error.message}`);
+  }
+};
+
+export const getUserById = async (req, res) => {
+  try {
+    const user = await Users.findOne({
+      where: {
+        id: req.users.id,
+      },
+    });
+    res.status(200).json({
+      message: "Success",
+      data: user,
+    });
+  } catch (error) {
+    console.log(`error pada getUserById: ${error.message}`);
   }
 };
