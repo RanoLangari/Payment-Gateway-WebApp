@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -8,16 +8,34 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { NavbarWithMegaMenu } from "./Navbar";
+import axios from "axios";
 const ProductPage = () => {
+  const [productImg, setProductImg] = useState({});
+  useEffect(() => {
+    try {
+      const category = "food";
+      axios
+        .get("https://api.api-ninjas.com/v1/randomimage?category=" + category, {
+          headers: {
+            "X-Api-Key": process.env.REACT_APP_API_KEY,
+            Accept: "image/jpeg",
+          },
+        })
+        .then((response) => {});
+    } catch (error) {
+      console.log(`error`);
+    }
+  }, []);
+
   return (
     <div>
       <NavbarWithMegaMenu />
       <Card className="w-96 mt-10 mx-auto">
         <CardHeader shadow={false} floated={false} className="h-96">
           <img
-            src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
-            alt="card-image"
-            className="h-full w-full object-cover"
+            src={productImg}
+            alt="product"
+            className="object-cover w-full h-full"
           />
         </CardHeader>
         <CardBody>

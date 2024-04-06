@@ -2,7 +2,7 @@ import { Sequelize, DataTypes } from "sequelize";
 import db from "../utils/db.js";
 
 const Barang = db.define(
-  "Barang",
+  "tbl_barang",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -19,6 +19,10 @@ const Barang = db.define(
     },
     stok: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    image_url: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
