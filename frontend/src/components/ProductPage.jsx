@@ -10,6 +10,7 @@ import {
 } from "@material-tailwind/react";
 import { NavbarWithMegaMenu } from "./Navbar";
 import axios from "axios";
+import Swal from "sweetalert2";
 const ProductPage = () => {
   const [barang, setBarang] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,16 @@ const ProductPage = () => {
     try {
       e.preventDefault();
       const token = localStorage.getItem("token");
+      if (!token) {
+        Swal.fire({
+          title: "Login",
+          text: "Please login first",
+          icon: "error",
+          showConfirmButton: true,
+          timer: 1000,
+        });
+        return;
+      }
       const API_URL = process.env.REACT_APP_API_URL;
       const getUser = await axios.get(`${API_URL}/user`, {
         headers: {
@@ -80,8 +91,8 @@ const ProductPage = () => {
   };
   const BarangItem = ({ barang }) => {
     return (
-      <Card className="w-96 mt-10 mx-auto">
-        <CardHeader shadow={false} floated={false} className="h-96">
+      <Card className="w-80 mt-10 mx-auto">
+        <CardHeader shadow={false} floated={false} className="h-80">
           <img
             src={barang.image_url}
             alt="product"
@@ -89,7 +100,7 @@ const ProductPage = () => {
           />
         </CardHeader>
         <form onSubmit={CheckOut}>
-          <CardBody>
+          <CardBody className="flex flex-col gap-2">
             <div className="mb-2 flex items-center justify-between">
               <Typography color="blue-gray" className="font-medium">
                 {barang.nama}
@@ -104,8 +115,9 @@ const ProductPage = () => {
               color="gray"
               className="font-normal opacity-75"
             >
-              With plenty of talk and listen time, voice-activated Siri access,
-              and an available wireless charging case.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
+              libero odit autem, quos ipsam iure pariatur obcaecati aut
+              dignissimos laboriosam?
             </Typography>
           </CardBody>
           <CardFooter className="pt-0">
@@ -128,9 +140,9 @@ const ProductPage = () => {
       <Spinner color="blue" />
     </div>
   ) : (
-    <div>
+    <div className="ml-2">
       <NavbarWithMegaMenu />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="flex flex-wrap justify-center p-16">
         {barang.map((barang) => (
           <BarangItem barang={barang} key={barang.id} />
         ))}

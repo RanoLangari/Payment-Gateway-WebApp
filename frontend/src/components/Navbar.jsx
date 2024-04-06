@@ -283,14 +283,42 @@ export function NavbarWithMegaMenu() {
       </div>
       <Collapse open={openNav}>
         <NavList />
-        <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-          <Button variant="outlined" size="sm" color="blue-gray" fullWidth>
-            Log In
-          </Button>
-          <Button variant="gradient" size="sm" fullWidth>
-            Sign In
-          </Button>
-        </div>
+        {localStorage.getItem("token") ? (
+          <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+            <Button
+              variant="outlined"
+              size="sm"
+              color="blue-gray"
+              fullWidth
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/login");
+              }}
+            >
+              Logout
+            </Button>
+          </div>
+        ) : (
+          <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
+            <Button
+              variant="outlined"
+              size="sm"
+              color="blue-gray"
+              fullWidth
+              onClick={() => navigate("/login")}
+            >
+              Log In
+            </Button>
+            <Button
+              variant="gradient"
+              size="sm"
+              fullWidth
+              onClick={() => navigate("/register")}
+            >
+              Sign In
+            </Button>
+          </div>
+        )}
       </Collapse>
     </Navbar>
   );
