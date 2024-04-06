@@ -85,6 +85,7 @@ function NavListMenu() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const renderItems = navListMenuItems.map(
     ({ icon, title, description }, key) => (
+      // eslint-disable-next-line
       <a href="#" key={key}>
         <MenuItem className="flex items-center gap-3 rounded-lg">
           <div className="flex items-center justify-center rounded-lg !bg-blue-gray-50 p-2 ">
@@ -219,12 +220,7 @@ export function NavbarWithMegaMenu() {
             allowHover={true}
           >
             <MenuHandler>
-              <IconButton
-                className="!p-0"
-                color="blue-gray"
-                size="sm"
-                ripple="light"
-              >
+              <IconButton className="!p-0" color="blue-gray" size="sm">
                 <UserIcon className="h-6 w-6" strokeWidth={2} />
               </IconButton>
             </MenuHandler>

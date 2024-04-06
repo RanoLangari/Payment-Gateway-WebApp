@@ -39,6 +39,13 @@ export const getPesananById = async (req, res) => {
 
 export const createPesanan = async (req, res) => {
   try {
+    const dataPesanan = {
+      id_barang: req.body.id_barang,
+      id_user: req.body.id_user,
+      jumlah: req.body.jumlah,
+      status: req.body.status,
+      total_harga: req.body.total_harga,
+    };
     let parameter = {
       transaction_details: {
         order_id: "ORDER-" + Math.round(new Date().getTime() / 1000),
@@ -49,12 +56,34 @@ export const createPesanan = async (req, res) => {
         email: req.body.email,
       },
     };
+    const finishPesanan = await Pesanan.create(dataPesanan);
     const token = await snap.createTransactionToken(parameter);
     res.status(200).json({
       message: "Success",
+      id: finishPesanan.id,
       token,
     });
   } catch (error) {
     console.log(`error pada createPesanan: ${error.message}`);
+  }
+};
+
+export const updatePesanan = async (req, res) => {
+  try {
+    await Pesanan.update(
+      {
+        status: req.body.status,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+    res.status(200).json({
+      message: "Success",
+    });
+  } catch (error) {
+    console.log(`error pada updatePesanan: ${error.message}`);
   }
 };

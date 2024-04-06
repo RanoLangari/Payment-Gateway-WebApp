@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 const ProductPage = () => {
   const [barang, setBarang] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const fetchBarang = async () => {
     try {
       const API_URL = process.env.REACT_APP_API_URL;
@@ -62,6 +63,10 @@ const ProductPage = () => {
       });
       if (getUser.status === 200) {
         const data = {
+          id_barang: e.target.id_barang.value,
+          id_user: getUser.data.data.id,
+          jumlah: 1,
+          status: "pending",
           nama: getUser.data.data.nama_lengkap,
           email: getUser.data.data.email,
           total_harga: e.target.total_harga.value,
@@ -71,7 +76,15 @@ const ProductPage = () => {
           const snap = window.snap;
           snap.pay(createPesanan.data.token, {
             onSuccess: function (result) {
-              console.log("success");
+              axios.put(`${API_URL}/pesanan/${createPesanan.data.id}`, {
+                status: "Paid",
+              });
+              Swal.fire({
+                title: "Success",
+                text: "Pesanan Berhasil",
+                icon: "success",
+                showConfirmButton: true,
+              });
             },
             onPending: function (result) {
               console.log("pending");
@@ -108,6 +121,7 @@ const ProductPage = () => {
               <Typography color="blue-gray" className="font-medium">
                 Rp. {barang.harga}
               </Typography>
+              <input type="hidden" name="id_barang" value={barang.id} />
               <input type="hidden" name="total_harga" value={barang.harga} />
             </div>
             <Typography
