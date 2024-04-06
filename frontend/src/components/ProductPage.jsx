@@ -6,34 +6,34 @@ import {
   CardFooter,
   Typography,
   Button,
+  Spinner,
 } from "@material-tailwind/react";
 import { NavbarWithMegaMenu } from "./Navbar";
 import axios from "axios";
 const ProductPage = () => {
-  const [productImg, setProductImg] = useState({});
+  const [barang, setBarang] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    try {
-      const category = "food";
-      axios
-        .get("https://api.api-ninjas.com/v1/randomimage?category=" + category, {
-          headers: {
-            "X-Api-Key": process.env.REACT_APP_API_KEY,
-            Accept: "image/jpeg",
-          },
-        })
-        .then((response) => {});
-    } catch (error) {
-      console.log(`error`);
-    }
+    const fetchBarang = async () => {
+      try {
+        const API_URL = process.env.REACT_APP_API_URL;
+        const fetchBarang = await axios.get(`${API_URL}/barang`);
+        if (fetchBarang.status === 200) {
+          setBarang(fetchBarang.data.data);
+          setLoading(true);
+        }
+      } catch (error) {
+        console.log(`error`);
+      }
+    };
+    fetchBarang();
   }, []);
-
-  return (
-    <div>
-      <NavbarWithMegaMenu />
+  const BarangItem = ({ barang }) => {
+    return (
       <Card className="w-96 mt-10 mx-auto">
         <CardHeader shadow={false} floated={false} className="h-96">
           <img
-            src={productImg}
+            src={barang.image_url}
             alt="product"
             className="object-cover w-full h-full"
           />
@@ -41,10 +41,10 @@ const ProductPage = () => {
         <CardBody>
           <div className="mb-2 flex items-center justify-between">
             <Typography color="blue-gray" className="font-medium">
-              Apple AirPods
+              {barang.nama}
             </Typography>
             <Typography color="blue-gray" className="font-medium">
-              $95.00
+              Rp. {barang.harga}
             </Typography>
           </div>
           <Typography
@@ -66,6 +66,21 @@ const ProductPage = () => {
           </Button>
         </CardFooter>
       </Card>
+    );
+  };
+
+  return !loading ? (
+    <div className="flex items-center justify-center h-screen">
+      <Spinner color="blue" />
+    </div>
+  ) : (
+    <div>
+      <NavbarWithMegaMenu />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {barang.map((barang) => (
+          <BarangItem barang={barang} key={barang.id} />
+        ))}
+      </div>
     </div>
   );
 };
