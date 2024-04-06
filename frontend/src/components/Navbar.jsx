@@ -27,6 +27,7 @@ import {
   ShoppingCartIcon,
   TagIcon,
   UserGroupIcon,
+  UserIcon,
 } from "@heroicons/react/24/solid";
 
 import { useNavigate } from "react-router-dom";
@@ -211,23 +212,62 @@ export function NavbarWithMegaMenu() {
         <div className="hidden lg:block">
           <NavList />
         </div>
-        <div className="hidden gap-2 lg:flex">
-          <Button
-            variant="text"
-            size="sm"
-            color="blue-gray"
-            onClick={() => navigate("/login")}
+        {localStorage.getItem("token") ? (
+          <Menu
+            offset={{ mainAxis: 20 }}
+            placement="bottom-end"
+            allowHover={true}
           >
-            Log In
-          </Button>
-          <Button
-            variant="gradient"
-            size="sm"
-            onClick={() => navigate("/register")}
-          >
-            Sign In
-          </Button>
-        </div>
+            <MenuHandler>
+              <IconButton
+                className="!p-0"
+                color="blue-gray"
+                size="sm"
+                ripple="light"
+              >
+                <UserIcon className="h-6 w-6" strokeWidth={2} />
+              </IconButton>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem>
+                <Typography variant="h6" className="font-medium">
+                  Profile
+                </Typography>
+              </MenuItem>
+              <MenuItem>
+                <Typography
+                  variant="h6"
+                  className="font-medium"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                  }}
+                >
+                  Logout
+                </Typography>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : (
+          <div className="flex gap-2">
+            <Button
+              variant="outlined"
+              size="sm"
+              color="blue-gray"
+              onClick={() => navigate("/login")}
+            >
+              Log In
+            </Button>
+            <Button
+              variant="gradient"
+              size="sm"
+              onClick={() => navigate("/register")}
+            >
+              Sign In
+            </Button>
+          </div>
+        )}
+
         <IconButton
           variant="text"
           color="blue-gray"

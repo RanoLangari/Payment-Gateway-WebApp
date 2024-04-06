@@ -43,6 +43,7 @@ const Login = () => {
           showConfirmButton: true,
           timer: 1000,
         }).then(() => {
+          localStorage.setItem("token", login.data.token);
           navigate("/");
         });
       }
