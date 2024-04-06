@@ -29,6 +29,8 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/solid";
 
+import { useNavigate } from "react-router-dom";
+
 const navListMenuItems = [
   {
     title: "Products",
@@ -186,6 +188,7 @@ function NavList() {
 
 export function NavbarWithMegaMenu() {
   const [openNav, setOpenNav] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -209,10 +212,19 @@ export function NavbarWithMegaMenu() {
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Button variant="text" size="sm" color="blue-gray">
+          <Button
+            variant="text"
+            size="sm"
+            color="blue-gray"
+            onClick={() => navigate("/login")}
+          >
             Log In
           </Button>
-          <Button variant="gradient" size="sm">
+          <Button
+            variant="gradient"
+            size="sm"
+            onClick={() => navigate("/register")}
+          >
             Sign In
           </Button>
         </div>

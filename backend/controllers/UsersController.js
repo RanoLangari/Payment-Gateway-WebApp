@@ -3,7 +3,7 @@ import Users from "../Models/UsersModel.js";
 export const registerUser = async (req, res) => {
   try {
     const user = await Users.create(req.body);
-    res.status(201).json({
+    return res.status(201).json({
       message: "User berhasil ditambahkan",
       data: user,
     });
